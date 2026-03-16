@@ -39,7 +39,3 @@ A web-based developer tool that uses Claude AI to explain, refactor, test, and s
 ---
 
 ## Screenshots
-
-<img width="1420" height="603" alt="Screenshot 2025-11-14 at 1 29 56 PM" src="https://github.com/user-attachments/assets/9e2c3e37-6273-4a4f-96d6-715cefaed1d3" />
-<img width="906" height="621" alt="Screenshot 2025-11-10 at 6 25 19 PM" src="https://github.com/user-attachments/assets/fc1c689e-d409-4f04-9c2b-9f4b2c5ea7ef" />
-<img width="528" height="375" alt="Screenshot 2025-11-10 at 6 25 10 PM" src="https://github.com/user-attachments/assets/d52da72e-3ba7-4579-b37f-6719512472b4" />
