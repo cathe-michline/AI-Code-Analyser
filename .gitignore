@@ -1,6 +1,7 @@
 # Node modules
 node_modules/
 .env
+.env.example
 .DS_Store
 
 
@@ -36,5 +37,3 @@ Thumbs.db
 *.seed
 *.pid.lock
 
-# Optional: ignore Ollama model cache (if you store anything locally)
-ollama_models/

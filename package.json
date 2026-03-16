@@ -29,8 +29,10 @@
   },
   "homepage": "https://github.com/cathe-michline/ai-code-explainer-demo#readme",
   "dependencies": {
-    "express": "^5.1.0",
-    "node-fetch": "^2.7.0"
+    "@anthropic-ai/sdk": "^0.78.0",
+    "@google/generative-ai": "^0.24.1",
+    "dotenv": "^17.3.1",
+    "express": "^5.1.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
