@@ -40,7 +40,7 @@ This project uses AI to explain functionality, detect potential issues, suggest 
 
 - **Frontend:** React / Angular (update based on your repo)  
 - **Backend:** Node.js / Python FastAPI  
-- **AI Integration:** Ollama - Free LLM Framework
+- **AI Integration:** Claude API
 
 ###Screenshots
 ---
