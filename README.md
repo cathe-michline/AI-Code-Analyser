@@ -4,6 +4,11 @@ A web-based developer tool that uses Claude AI to explain, refactor, test, and s
 
 ---
 
+### 🔗 Project Link: [ai-code-analyser.onrender.com](https://ai-code-analyser.onrender.com/)
+> ⚠️ Refresh 2–3 times if it's asleep (hosted on Render free tier)
+
+---
+
 ## 🚀 Features
 
 ### 🔍 Code Analysis
@@ -31,11 +36,27 @@ A web-based developer tool that uses Claude AI to explain, refactor, test, and s
 
 ## 🧰 Tech Stack
 
-- **Frontend:** HTML, CSS, Vanilla JS
-- **Backend:** Node.js + Express
-- **AI:** Claude API (`claude-sonnet-4-20250514`) via `@anthropic-ai/sdk`
-- **Rate Limiting:** 20 req/min, 100 req/day per IP
+| Layer | Technology |
+|---|---|
+| Frontend | HTML, CSS, Vanilla JS |
+| Backend | Node.js + Express |
+| AI | Claude API (`claude-sonnet-4-20250514`) via `@anthropic-ai/sdk` |
+| Rate Limiting | 20 req/min, 100 req/day per IP |
 
 ---
 
-## Screenshots
+## 🛠️ Getting Started
+
+```bash
+git clone https://github.com/your-username/ai-code-analyser.git
+cd ai-code-analyser
+npm install
+npm start
+```
+
+> Add your Anthropic API key to a `.env` file:
+> ```
+> ANTHROPIC_API_KEY=your_key_here
+> ```
+
+---
