@@ -232,7 +232,7 @@ analyzeBtn.addEventListener("click", async () => {
     const data = await res.json();
 
     if (!res.ok) {
-      respSummary.textContent = "⚠ " + (data.error || "Request failed");
+      respSummary.textContent = "⚠ " + (data.detail || data.error || "Request failed");
       return;
     }
 
@@ -290,7 +290,7 @@ refactorBtn.addEventListener("click", async () => {
     const data = await res.json();
 
     if (!res.ok) {
-      refactorOutputBox.textContent = "⚠ " + (data.error || "Request failed");
+      refactorOutputBox.textContent = "⚠ " + (data.detail || data.error || "Request failed");
       return;
     }
 
@@ -345,7 +345,7 @@ testsBtn.addEventListener("click", async () => {
     const data = await res.json();
 
     if (!res.ok) {
-      testOutputBox.textContent = "⚠ " + (data.error || "Request failed");
+      testOutputBox.textContent = "⚠ " + (data.detail || data.error || "Request failed");
       return;
     }
 
@@ -378,7 +378,7 @@ securityBtn?.addEventListener("click", async () => {
     const data = await res.json();
 
     if (!res.ok) {
-      securitySummary.textContent = "⚠ " + (data.error || "Request failed");
+      securitySummary.textContent = "⚠ " + (data.detail || data.error || "Request failed");
       return;
     }
 
@@ -418,3 +418,21 @@ clearBtn.addEventListener("click", () => {
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
 showTab("tab-explain");
+
+fetch("/health")
+  .then((res) => res.json())
+  .then((data) => {
+    const poweredBy = document.getElementById("poweredBy");
+    const explainNote = document.getElementById("explainNote");
+    if (data.configured) {
+      const label = `Powered by ${data.provider} · ${data.model}`;
+      if (poweredBy) poweredBy.textContent = label;
+      if (explainNote) explainNote.textContent = label;
+    } else if (poweredBy) {
+      poweredBy.textContent = "AI is not configured — add an API key to .env";
+    }
+  })
+  .catch(() => {
+    const poweredBy = document.getElementById("poweredBy");
+    if (poweredBy) poweredBy.textContent = "Could not reach the local server";
+  });

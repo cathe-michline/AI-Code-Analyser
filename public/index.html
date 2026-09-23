@@ -108,7 +108,7 @@ find_max([3, 1, 4, 1, 5, 9, 2])</textarea>
       <button class="tab-btn"        data-tab="tab-security" id="tabSecurityBtn">🔐 Security</button>
     </div>
 
-    <div id="loading" class="loading hidden">Thinking with Claude AI...</div>
+    <div id="loading" class="loading hidden">Thinking...</div>
 
     <!-- ── EXPLAIN TAB ── -->
     <div class="tab-panel" id="tab-explain">
@@ -142,7 +142,7 @@ find_max([3, 1, 4, 1, 5, 9, 2])</textarea>
           <pre id="respCaution" class="resp-body"></pre>
         </div>
       </div>
-      <div class="generated-note">Powered by Claude claude-sonnet-4 · temperature 0 · consistent output</div>
+      <div class="generated-note" id="explainNote">Powered by the configured AI provider</div>
     </div>
 
     <!-- ── REFACTOR TAB ── -->
@@ -199,14 +199,14 @@ find_max([3, 1, 4, 1, 5, 9, 2])</textarea>
         <div class="resp-title">Patched Code</div>
         <textarea id="secureCodeBox" class="code-area light-editor" readonly spellcheck="false"></textarea>
       </div>
-      <div class="generated-note">Security audit powered by Claude · OWASP-aware</div>
+      <div class="generated-note">Security audit is OWASP-aware. Review before applying patches.</div>
     </div>
 
   </section>
 </main>
 
 <footer class="footer">
-  Powered by Claude claude-sonnet-4 · temperature=0 for consistent results · This tool supports developers, not replaces them.
+  <span id="poweredBy">Checking AI provider...</span> · This tool supports developers, not replaces them.
 </footer>
 
 <script src="main.js"></script>
