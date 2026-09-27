@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AI Code Explainer & Refactoring Assistant</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -17,13 +18,13 @@
 
   <div class="controls">
     <!-- Streaming toggle -->
-    <label class="control-block stream-toggle-label">
-      <span class="label-small">⚡ Stream</span>
+    <div class="control-block stream-toggle-label">
+      <span class="label-small">Stream</span>
       <label class="switch">
         <input type="checkbox" id="streamToggle" />
         <span class="slider"></span>
       </label>
-    </label>
+    </div>
 
     <label class="control-block">
       <span class="label-small">Mode</span>
@@ -56,10 +57,7 @@
   <!-- LEFT PANEL: INPUT -->
   <section class="panel panel-left">
     <div class="panel-head">
-      <div class="title-row">
-        <h2>Your Code</h2>
-        <span class="chip">Max 200 lines</span>
-      </div>
+      <h2>Your Code</h2>
       <p class="hint">Paste your function or snippet below</p>
     </div>
 
@@ -105,7 +103,7 @@ find_max([3, 1, 4, 1, 5, 9, 2])</textarea>
       <button class="tab-btn active" data-tab="tab-explain"  id="tabExplainBtn">Explanation</button>
       <button class="tab-btn"        data-tab="tab-refactor" id="tabRefactorBtn">Refactored</button>
       <button class="tab-btn"        data-tab="tab-tests"    id="tabTestsBtn">Tests</button>
-      <button class="tab-btn"        data-tab="tab-security" id="tabSecurityBtn">🔐 Security</button>
+      <button class="tab-btn"        data-tab="tab-security" id="tabSecurityBtn">Security</button>
     </div>
 
     <div id="loading" class="loading hidden">Thinking...</div>
@@ -119,27 +117,27 @@ find_max([3, 1, 4, 1, 5, 9, 2])</textarea>
       <div class="response-sections" id="explainSection">
         <div class="resp-card">
           <div class="resp-title">Summary</div>
-          <pre id="respSummary" class="resp-body"></pre>
+          <div id="respSummary" class="resp-body"></div>
         </div>
         <div class="resp-card" id="inputsOutputsSection">
           <div class="resp-title">Inputs / Outputs</div>
-          <pre id="respInputsOutputs" class="resp-body"></pre>
+          <div id="respInputsOutputs" class="io-grid"></div>
         </div>
         <div class="resp-card">
           <div class="resp-title">Step-by-step Explanation</div>
-          <pre id="respSteps" class="resp-body"></pre>
+          <ol id="respSteps" class="resp-list"></ol>
         </div>
         <div class="resp-card">
           <div class="resp-title">Time / Space Complexity</div>
-          <pre id="respComplexity" class="resp-body"></pre>
+          <div id="respComplexity" class="complexity-body"></div>
         </div>
         <div class="resp-card">
           <div class="resp-title">Suggested Improvements</div>
-          <pre id="respImprovements" class="resp-body"></pre>
+          <ul id="respImprovements" class="resp-list"></ul>
         </div>
-        <div class="resp-card">
+        <div class="resp-card card-caution">
           <div class="resp-title">Caution / Edge Cases</div>
-          <pre id="respCaution" class="resp-body"></pre>
+          <div id="respCaution" class="resp-body"></div>
         </div>
       </div>
       <div class="generated-note" id="explainNote">Powered by the configured AI provider</div>
@@ -158,14 +156,11 @@ find_max([3, 1, 4, 1, 5, 9, 2])</textarea>
         <textarea id="refactorOutputBox" class="code-area light-editor" readonly spellcheck="false"></textarea>
       </div>
 
-      <!-- Per-change diff view -->
-      <div id="diffContainer" class="diff-container hidden"></div>
-
       <div class="resp-card">
         <div class="resp-title">Why this refactor is better</div>
-        <pre id="refactorWhy" class="resp-body"></pre>
+        <ul id="refactorWhy" class="resp-list"></ul>
       </div>
-      <div class="generated-note">Refactoring preserves behaviour · diff shows every change</div>
+      <div class="generated-note">Refactoring preserves behaviour.</div>
     </div>
 
     <!-- ── TESTS TAB ── -->
@@ -178,19 +173,19 @@ find_max([3, 1, 4, 1, 5, 9, 2])</textarea>
       </div>
       <div class="resp-card">
         <div class="resp-title">Coverage Notes</div>
-        <pre id="testNotes" class="resp-body"></pre>
+        <ul id="testNotes" class="resp-list"></ul>
       </div>
       <div class="generated-note">Review before using in production.</div>
     </div>
 
     <!-- ── SECURITY TAB ── -->
     <div class="tab-panel hidden" id="tab-security">
-      <div class="resp-card security-summary-card">
+      <div class="resp-card">
         <div class="security-header">
           <div class="resp-title">Security Audit</div>
           <span id="securityRisk" class="risk-badge">—</span>
         </div>
-        <pre id="securitySummary" class="resp-body"></pre>
+        <div id="securitySummary" class="resp-body"></div>
       </div>
 
       <div id="securityList" class="security-list"></div>

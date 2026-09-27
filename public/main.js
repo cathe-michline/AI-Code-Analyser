@@ -45,7 +45,6 @@ const streamOutput     = document.getElementById("streamOutput");
 // Refactor outputs
 const refactorOutputBox = document.getElementById("refactorOutputBox");
 const refactorWhy       = document.getElementById("refactorWhy");
-const diffContainer     = document.getElementById("diffContainer");
 const copyRefactorBtn   = document.getElementById("copyRefactorBtn");
 
 // Test outputs
@@ -142,60 +141,50 @@ async function runStream(endpoint, body, targetEl) {
   }
 }
 
-// ─── Diff view ────────────────────────────────────────────────────────────────
-// Builds a simple line-diff display for each change returned by /api/refactor
-function renderDiff(changes) {
-  if (!diffContainer) return;
-  if (!changes || changes.length === 0) {
-    diffContainer.classList.add("hidden");
+function fillList(listEl, items) {
+  listEl.replaceChildren();
+  (Array.isArray(items) ? items : []).forEach((text) => {
+    const item = document.createElement("li");
+    item.textContent = text;
+    listEl.appendChild(item);
+  });
+}
+
+function fillInputsOutputs(io) {
+  respInputsOutputs.replaceChildren();
+  [
+    ["Inputs", io.inputs],
+    ["Outputs", io.outputs],
+    ["Side effects", io.side_effects],
+  ].forEach(([label, value]) => {
+    const row = document.createElement("div");
+    row.className = "io-row";
+    const labelEl = document.createElement("div");
+    labelEl.className = "io-label";
+    labelEl.textContent = label;
+    const valueEl = document.createElement("div");
+    valueEl.className = "io-value";
+    valueEl.textContent = value || "";
+    row.append(labelEl, valueEl);
+    respInputsOutputs.appendChild(row);
+  });
+}
+
+function fillComplexity(text) {
+  respComplexity.replaceChildren();
+  const value = text || "";
+  const match = value.match(/^(O\([^)]+\)|Θ\([^)]+\))\s*[-–—:]?\s*/);
+  if (!match) {
+    respComplexity.textContent = value;
     return;
   }
-
-  diffContainer.innerHTML = "";
-  diffContainer.classList.remove("hidden");
-
-  const title = document.createElement("div");
-  title.className = "resp-title";
-  title.textContent = `Changes (${changes.length})`;
-  diffContainer.appendChild(title);
-
-  changes.forEach((change, i) => {
-    const card = document.createElement("div");
-    card.className = "diff-card";
-
-    const reasonEl = document.createElement("div");
-    reasonEl.className = "diff-reason";
-    reasonEl.textContent = `${i + 1}. ${change.reason}`;
-    card.appendChild(reasonEl);
-
-    const cols = document.createElement("div");
-    cols.className = "diff-cols";
-
-    const beforeCol = document.createElement("div");
-    beforeCol.className = "diff-col diff-before";
-    const beforeLabel = document.createElement("div");
-    beforeLabel.className = "diff-label";
-    beforeLabel.textContent = "Before";
-    const beforeCode = document.createElement("pre");
-    beforeCode.textContent = change.original || "";
-    beforeCol.appendChild(beforeLabel);
-    beforeCol.appendChild(beforeCode);
-
-    const afterCol = document.createElement("div");
-    afterCol.className = "diff-col diff-after";
-    const afterLabel = document.createElement("div");
-    afterLabel.className = "diff-label";
-    afterLabel.textContent = "After";
-    const afterCode = document.createElement("pre");
-    afterCode.textContent = change.refactored || "";
-    afterCol.appendChild(afterLabel);
-    afterCol.appendChild(afterCode);
-
-    cols.appendChild(beforeCol);
-    cols.appendChild(afterCol);
-    card.appendChild(cols);
-    diffContainer.appendChild(card);
-  });
+  const badge = document.createElement("span");
+  badge.className = "complexity-badge";
+  badge.textContent = match[1];
+  const rest = document.createElement("p");
+  rest.className = "resp-body";
+  rest.textContent = value.slice(match[0].length);
+  respComplexity.append(badge, rest);
 }
 
 // ─── Analyze ──────────────────────────────────────────────────────────────────
@@ -236,19 +225,15 @@ analyzeBtn.addEventListener("click", async () => {
       return;
     }
 
-    respSummary.textContent    = data.summary        || "";
-    respComplexity.textContent = data.time_complexity || "";
-    respCaution.textContent    = data.caution         || "";
-    respSteps.textContent      = Array.isArray(data.steps)
-      ? data.steps.map((s, i) => `${i + 1}. ${s}`).join("\n") : "";
-    respImprovements.textContent = Array.isArray(data.improvements)
-      ? data.improvements.map(s => `• ${s}`).join("\n") : "";
+    respSummary.textContent = data.summary || "";
+    respCaution.textContent = data.caution || "";
+    fillComplexity(data.time_complexity || "");
+    fillList(respSteps, data.steps);
+    fillList(respImprovements, data.improvements);
 
     if (mode === "beginner" && data.inputs_outputs) {
       inputsOutputsSection.style.display = "block";
-      const io = data.inputs_outputs;
-      respInputsOutputs.textContent =
-        `Inputs: ${io.inputs}\nOutputs: ${io.outputs}\nSide effects: ${io.side_effects}`;
+      fillInputsOutputs(data.inputs_outputs);
     } else {
       inputsOutputsSection.style.display = "none";
     }
@@ -273,7 +258,6 @@ refactorBtn.addEventListener("click", async () => {
 
   if (useStream) {
     refactorOutputBox.textContent = "";
-    diffContainer.classList.add("hidden");
     const streamEl = document.getElementById("refactorStreamOutput");
     await runStream("/api/refactor/stream", { mode, code, language }, streamEl);
     setLoading(false);
@@ -295,10 +279,7 @@ refactorBtn.addEventListener("click", async () => {
     }
 
     refactorOutputBox.textContent = data.refactored_code || "";
-    refactorWhy.textContent = Array.isArray(data.rationale)
-      ? data.rationale.map(r => `• ${r}`).join("\n") : "";
-
-    renderDiff(data.changes);
+    fillList(refactorWhy, data.rationale);
   } catch (err) {
     refactorOutputBox.textContent = "⚠ Network error: " + err.message;
   } finally {
@@ -350,8 +331,7 @@ testsBtn.addEventListener("click", async () => {
     }
 
     testOutputBox.textContent = data.test_code || "";
-    testNotes.textContent = Array.isArray(data.notes)
-      ? data.notes.map(n => `• ${n}`).join("\n") : "";
+    fillList(testNotes, data.notes);
   } catch (err) {
     testOutputBox.textContent = "⚠ Network error: " + err.message;
   } finally {
