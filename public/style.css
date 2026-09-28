@@ -121,16 +121,22 @@ body {
 
 .code-area {
   width: 100%;
-  min-height: 200px;
+  min-height: 240px;
   border-radius: 14px;
   background: #020617;
   color: #e2e8f0;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  padding: 12px;
-  font-family: ui-monospace, SFMono-Regular, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace;
-  font-size: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 16px 18px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  tab-size: 4;
   resize: vertical;
+}
+.code-area:focus {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
 }
 
 .question-block {
@@ -439,7 +445,7 @@ body {
   background: #f8fafc;
   color: #0f172a;
   border: 1px solid #e2e8f0;
-  min-height: 180px;
+  min-height: 200px;
 }
 
 .diff-container {
